@@ -1,0 +1,50 @@
+Database is a structured data storage program
+
+Database provide an api for reading and storing data
+
+Database Types:
+  Flat File
+  Mongo DB - NoSQL
+  SQL (Structured Query Language)
+  MySql
+  Postgres (postgreSQL)
+
+  Structured Query Language
+
+
+##### Mongoose #####
+
+//require Mongoose Library
+var mongoose = require('mongoose');
+
+//connect to the database
+mongoose.connect('mongodb://localhost/test');
+
+var Cat = mongoose.model('Cat', {
+  name: {
+    type: String,
+    required: true,
+    index: true,
+    validate: {
+      validator: function (value) {
+        return value.length > 3
+      },
+      message: "{VALUE} is not a long enough name"
+    }
+  },
+  lives: Number,
+  colors; [{name: String}]
+  });
+
+var kitty = new Cat({ name: 'Zildjian' });
+kitty.save(function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('meow');
+  }
+});
+
+Cat.findOne({lives: {$gte : 5}}, "name", function(err, cat){
+
+})
