@@ -15,6 +15,7 @@
 	var app = express();
 
 	var mongoose = require('mongoose');
+
   mongoose.connect('mongodb://localhost');
 
 	app.use(bodyParser.json());
@@ -45,8 +46,14 @@
 			res.send("[]");
 			return;
 		}
-
-		res.send(JSON.stringify(messages));
+		Message.find({}, "text username", function(err, data){
+			if (err) {
+				res.send("[]");
+				return;
+			}
+			res.send(JSON.stringify(data));
+		});
+		// res.send(JSON.stringify(messages));
 	});
 
 	app.post("/messages", function(req, res){
@@ -59,18 +66,41 @@
 			res.send("error");
 			return;
 		}
-		messages.push(req.body.newMessage);
-		res.send("success");
+		// messages.push(req.body.newMessage);
+
+		//Constructor function for new database objects
+		var message = new Message({
+			text: req.body.newMessage,
+			username: req.session.username
+		});
+		message.save(function(err) {
+			if (err) {
+				res.send("error on save");
+				return;
+			}
+			res.send("success");
+		})
 	});
 
-
+	//Constructor function for new database objects
+	var user = new User({
+		username: req.session.username
+		username: req.session.password
+	});
+	message.save(function(err) {
+		if (err) {
+			res.send("error on save");
+			return;
+		}
+		res.send("success");
+	})
 
 	app.get("/login", function(req, res){
 		res.sendFile(__dirname + '/public/login.html');
 	});
 
 	function logInUser(username, password) {
-		if (username == "erty" && password == "password") {
+		if (username == "joe" && password == "password") {
 			return true;
 		} else if (username == "guest" && password == "guest") {
 			return true;

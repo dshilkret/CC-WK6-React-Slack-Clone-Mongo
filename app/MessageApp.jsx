@@ -7,7 +7,7 @@ var MessageApp = React.createClass({
 		var messages = this.state.messages;
 		var messageHTML = [];
 		for(var i = 0; i < messages.length; i++){
-			messageHTML.push(<Message key={i} text={messages[i]} />);
+			messageHTML.push(<Message key={i} data={messages[i]} />);
 		}
 		return (<div>
 			{messageHTML}
@@ -29,13 +29,8 @@ var MessageApp = React.createClass({
 		}, 'json');
 	},
 	componentDidMount: function() {
-		this.getMessages();	
+		this.getMessages();
 	}
 });
 
 module.exports = MessageApp;
-
-
-
-
-
